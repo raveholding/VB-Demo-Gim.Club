@@ -629,7 +629,7 @@ const VERTS={todo:{t:'Todos los módulos (demostración)',m:Object.keys(MODS)},
 const on=k=>{const p=P();const L=p.mods||VERTS[p.vert].m;return L.includes(k);};
 window.gProOn=on;
 const NAVX=[['gdash','Panel de negocio'],['glockers','Lockers'],['gcred','Packs y créditos'],['gcanchas','Canchas'],['gtorneos','Torneos'],['gcontacto','Categorías'],['gwod','WOD']];
-function applyNav(){try{const it=UX_GROUPS.gym.items,sec=GW().g;for(let i=it.length-1;i>=0;i--)if(NAVX.some(x=>x[0]===it[i][0]))it.splice(i,1);
+function applyNav(){try{NAVX.forEach(([k])=>{const sc=SCREENS[k];if(!sc)return;if(!('_show0' in sc))sc._show0=sc.show||null;const o=sc._show0;sc.show=()=>on(k)&&(!o||o());});}catch(e){}try{const it=UX_GROUPS.gym.items,sec=GW().g;for(let i=it.length-1;i>=0;i--)if(NAVX.some(x=>x[0]===it[i][0]))it.splice(i,1);
   const add=NAVX.filter(x=>on(x[0]));it.splice(1,0,...add);add.forEach(([k])=>{UX_SEC_OF[k]=sec;if(!UX_COMPACT_OK.includes(k))UX_COMPACT_OK.push(k);});
   for(let i=NAV.length-1;i>=0;i--)if(NAVX.some(x=>x[0]===NAV[i][0]))NAV.splice(i,1);const j=NAV.findIndex(x=>x[0]==='ginicio');NAV.splice(j+1,0,...add.map(([k])=>[k,sec]));}catch(e){}}
 
