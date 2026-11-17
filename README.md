@@ -43,3 +43,13 @@ Para la tablet o el celular de la entrada. Se abre desde Gimnasio › Acceso ›
 - Timbre por áreas con avisos al celular (ntfy o WhatsApp), timbre por QR desde el celular del visitante (`timbre.html`), pases de visita, PIN del equipo, PIN de coacción, tarjeta NFC, horarios, emergencia, asistente de voz y relé ESP32.
 - Panel de configuración: doble toque en una zona libre de la pantalla. PIN de fábrica 1234 (cambiarlo en la puesta en marcha).
 - Requisito: abrir el sistema al menos una vez en ese mismo equipo y navegador, para que el portero tenga los socios. La carpeta `face/` sólo se usa si se activa el reconocimiento facial del personal (apagado de fábrica).
+
+## Torneos pro (2026-11-17)
+
+- **Inscripciones:** cupo, arancel por equipo, capitán socio o externo, jugadores, lista de espera que sube sola ante una baja. Cobro en Vender (caja y comprobante), link de pago o alias por WhatsApp, o marcado a mano con comprobante.
+- **Fixture automático:** liga (ida o ida y vuelta), eliminación directa con cabezas de serie y libres, o grupos + playoffs cruzados. Cada partido toma el primer turno libre de las canchas elegidas (respeta reservas, bloqueos y horario) y aparece en la grilla de Canchas.
+- **Posiciones en tiempo real:** puntos configurables por deporte, desempate por resultado entre ellos, diferencia y tantos a favor, ajustes por sanción, goleadores, llaves con avance automático y desempate en eliminación.
+- **Suplentes:** cada socio marca disponibilidad (deportes y días). Ante una baja, el sistema filtra a los disponibles ese día que no juegan a esa hora, los ordena y los convoca por WhatsApp; el primero que acepta queda en el partido.
+- **Transmisión en vivo por RTMP:** YouTube, Twitch, Kick, Facebook u otro servidor. La clave sólo la ve el administrador. QR para Larix Broadcaster (celular), guía para OBS, marcador en vivo con fondo verde para croma y reproductor embebido en la página pública.
+- **Página pública** (`/#torneo/<id>`): posiciones, próximos partidos, resultados y el partido en vivo, sin teléfonos ni pagos.
+- Límites honestos: el video lo emite el celular o la PC (el sistema no recibe video); el marcador se actualiza en la misma computadora; los avisos son por WhatsApp asistido (las notificaciones push y la confirmación automática del pago necesitan la nube y la cuenta de Mercado Pago del club).
