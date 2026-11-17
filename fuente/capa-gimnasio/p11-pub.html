@@ -92,6 +92,24 @@ a{color:inherit}button{font:inherit;color:inherit}
 .club form{display:grid;gap:10px}
 .club input{width:100%;min-height:48px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.35);color:var(--fg);font:inherit}
 .club label{font-size:13px;color:var(--mut)}.club .chk{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--mut)}.club .chk input{width:20px;min-height:20px;margin-top:2px;accent-color:var(--acc)}
+.cn{margin:40px 0 10px;border:1px solid var(--line);border-radius:24px;background:linear-gradient(160deg,var(--card),var(--bg2));padding:26px;scroll-margin-top:80px}
+.cn h2{font:700 26px var(--fd);margin:10px 0 4px}.cn-p{color:var(--mut);margin:0 0 14px}
+.cn-pills{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px;margin:8px 0}.cn-pills::-webkit-scrollbar{display:none}
+.cn-pill{flex:none;min-height:42px;padding:0 16px;border-radius:99px;border:1px solid var(--line);background:transparent;color:var(--mut);font:inherit;font-weight:600;font-size:14px;cursor:pointer}
+.cn-pill:hover{color:var(--fg)}.cn-pill[aria-pressed=true]{background:var(--acc);color:var(--on);border-color:transparent}
+.cn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;margin-top:12px}
+.cn-c{background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:18px;padding:16px;min-width:0}
+.cn-c h3{margin:0;font:700 18px var(--fd)}.cn-m{color:var(--mut);font-size:13px;margin:4px 0 12px;line-height:1.4}
+.cn-sls{display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:8px}
+.cn-sl{min-height:54px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--fg);font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px}
+.cn-sl b{font-size:15px}.cn-sl span{font-size:11px;color:var(--mut)}.cn-sl:hover{border-color:var(--acc)}
+.cn-sl[aria-pressed=true]{background:var(--acc);color:var(--on);border-color:transparent}.cn-sl[aria-pressed=true] span{color:var(--on)}
+.cn-sl:disabled{opacity:.32;cursor:not-allowed}.cn-sl:disabled b{text-decoration:line-through}
+.cn-none{color:var(--mut);font-size:14px;margin:0}
+.cn-form{margin-top:18px;border-top:1px solid var(--line);padding-top:18px;display:grid;gap:10px;max-width:560px}
+.cn-form input{width:100%;min-height:48px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.35);color:var(--fg);font:inherit}
+.cn-form label{font-size:13px;color:var(--mut)}.cn-sum{font-weight:600;font-size:16px}.cn-sum em{font-style:normal;color:var(--acc)}
+.cn-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media (max-width:560px){.cn-2{grid-template-columns:1fr}.cn{padding:20px}}
 .msg{font-size:14px;min-height:1.2em}.msg.ok{color:var(--acc)}.msg.bad{color:#f87171}
 @media (max-width:860px){.club{grid-template-columns:1fr;padding:22px}}
 footer{margin-top:40px;border-top:1px solid var(--line);padding:30px 0 20px;color:var(--mut);font-size:14px}
@@ -126,12 +144,17 @@ footer b{color:var(--fg)}footer a{color:var(--fg)}
 <main id="top">
 <section class="hero"><div class="wrap"><div><span class="badge" id="promo" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 12 12 20 4 12V4h8z"/><circle cx="8.5" cy="8.5" r="1.5"/></svg><span id="promo-t"></span></span>
  <h1 id="h1"></h1><p id="pitch"></p>
- <div class="cta"><button type="button" class="btn acc" id="go-plans" data-t="cta1">Ver planes</button><a class="btn" id="wa-hero" target="_blank" rel="noopener" data-t="cta2">Hablar por WhatsApp</a></div>
+ <div class="cta"><button type="button" class="btn acc" id="go-plans" data-t="cta1">Ver planes</button><button type="button" class="btn" id="go-cn" hidden>Reservar cancha</button><a class="btn" id="wa-hero" target="_blank" rel="noopener" data-t="cta2">Hablar por WhatsApp</a></div>
  <div class="stats" id="stats"></div></div>
  <div class="hero-art" id="hero-art"></div></div></section>
 <div class="tools" id="planes"><div class="wrap"><div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><label class="sr" for="q" data-t="search">Buscar</label><input id="q" type="search" autocomplete="off"></div>
  <div class="pills" id="pills" role="group" aria-label="Categorías"></div></div></div>
 <div class="wrap" id="list" aria-live="polite"></div>
+<div class="wrap"><section class="cn" id="canchas" hidden aria-labelledby="cn-h"><span class="badge" id="cn-b">Reservas online · las 24 horas</span><h2 id="cn-h">Reservá tu cancha</h2><p class="cn-p" id="cn-p">Elegí el día, la cancha y el horario. Te confirmamos por WhatsApp.</p>
+ <div class="cn-pills" id="cn-days" role="group" aria-label="Día"></div><div class="cn-pills" id="cn-sp" role="group" aria-label="Deporte"></div>
+ <div class="cn-grid" id="cn-grid" aria-live="polite"></div>
+ <form class="cn-form" id="cn-form" hidden novalidate><div class="cn-sum" id="cn-sum"></div><div class="cn-2"><div><label for="cn-n" id="cn-nl">Tu nombre</label><input id="cn-n" autocomplete="name" maxlength="40" required></div><div><label for="cn-w" id="cn-wl">Tu WhatsApp</label><input id="cn-w" inputmode="tel" autocomplete="tel" maxlength="20" required></div></div>
+ <button class="btn acc" type="submit" id="cn-send">Pedir el turno por WhatsApp</button><p class="msg" id="cn-msg" role="status"></p></form><p class="msg ok" id="cn-done" role="status" style="margin-top:14px"></p></section></div>
 <div class="wrap"><section class="club" id="club" hidden><div><span class="badge" data-t="clubk">Club de socios</span><h2 id="club-h"></h2><p id="club-p"></p></div>
  <form id="club-f" novalidate><div><label for="cn" data-t="cn">Nombre y apellido</label><input id="cn" autocomplete="name" required></div><div><label for="cw" data-t="cw">WhatsApp</label><input id="cw" inputmode="tel" autocomplete="tel" required></div><div><label for="cb" data-t="cb">Fecha de cumpleaños</label><input id="cb" type="date" required></div>
  <label class="chk"><input type="checkbox" id="cc"><span data-t="cc">Acepto recibir avisos y promociones por WhatsApp (opcional).</span></label><button class="btn acc" type="submit" data-t="cj">Sumarme al club</button><div class="msg" id="cm" role="status"></div></form></section></div>
@@ -141,7 +164,7 @@ footer b{color:var(--fg)}footer a{color:var(--fg)}
  <div>Sistema desarrollado por <b>Vincular Business</b><br><i>“Tu idea, en buenas manos.”</i><br><a href="https://www.vincularbusiness.com.ar/" target="_blank" rel="noopener">vincularbusiness.com.ar</a> · Celular (387) 4484132<br>vincularbusiness@gmail.com</div></div></footer>
 <div class="bar" id="bar" role="region" aria-label="Tu pedido"><div class="t"><b id="bar-t"></b><span id="bar-n"></span></div><button class="btn acc" id="bar-go" type="button" data-t="review">Ver y enviar</button></div>
 <div class="ov" id="ov"></div>
-<aside class="drawer" id="dr" aria-label="Tu pedido" aria-hidden="true"><header><h2 data-t="order">Tu pedido</h2><button class="x" id="dr-x" type="button" aria-label="Cerrar">×</button></header><div class="in" id="dr-l"></div>
+<aside class="drawer" id="dr" aria-label="Tu pedido" aria-hidden="true"><header><h2 data-t="order">Tu pedido</h2><button class="x" id="dr-x" type="button" aria-label="Cerrar">×</button></header><div class="in"><div id="dr-l" style="display:flex;flex-direction:column;gap:12px"></div><div id="vbk-mount"></div></div>
  <div class="ft"><label for="cp" class="note" data-t="cp">¿Tenés un cupón?</label><div class="row"><input id="cp" maxlength="24" autocomplete="off"><button class="btn" id="cp-ok" type="button" data-t="apply">Aplicar</button></div><div class="msg" id="cp-m" role="status"></div>
  <div class="row"><input id="nm" placeholder="Tu nombre" style="text-transform:none" autocomplete="name"></div>
  <div class="tot"><span data-t="total">Total estimado</span><b id="dr-t"></b></div><button class="btn acc" id="send" type="button" data-t="send">Enviar por WhatsApp</button><p class="note" data-t="snote">Te respondemos para confirmar tu plan, el horario y la forma de pago. Todavía no se cobra nada.</p></div></aside>
@@ -209,9 +232,9 @@ function setQty(id,d){var p=(CAT.productos||[]).find(function(z){return z.id===i
  if(d>0&&totals().n===1)toast(t('added'));coupon=null;bar();}
 function toast(m){var d=document.createElement('div');d.className='toast';d.textContent=m;document.body.appendChild(d);setTimeout(function(){d.remove();},1800);}
 function drawer(on){$('#dr').classList.toggle('on',on);$('#ov').classList.toggle('on',on);$('#dr').setAttribute('aria-hidden',!on);if(on){paintDr();setTimeout(function(){$('#dr-x').focus();},50);}}
-function paintDr(){var ids=Object.keys(cart);$('#dr-l').innerHTML=ids.map(function(k){var c=cart[k];return '<div class="li"><div class="n"><b>'+esc(c.name)+'</b><span>'+c.qty+' × '+fmt(c.price)+'</span></div><div class="qty"><button type="button" data-k="'+esc(k)+'" data-d="-1" class="minus" aria-label="Quitar uno">−</button><output>'+c.qty+'</output><button type="button" class="plus" data-k="'+esc(k)+'" data-d="1" aria-label="Agregar uno">+</button></div></div>';}).join('')||'<p class="empty">—</p>';
+function paintDr(){if(window.VB_KIT_REFRESH)setTimeout(window.VB_KIT_REFRESH,0);var ids=Object.keys(cart);$('#dr-l').innerHTML=ids.map(function(k){var c=cart[k];return '<div class="li"><div class="n"><b>'+esc(c.name)+'</b><span>'+c.qty+' × '+fmt(c.price)+'</span></div><div class="qty"><button type="button" data-k="'+esc(k)+'" data-d="-1" class="minus" aria-label="Quitar uno">−</button><output>'+c.qty+'</output><button type="button" class="plus" data-k="'+esc(k)+'" data-d="1" aria-label="Agregar uno">+</button></div></div>';}).join('')||'<p class="empty">—</p>';
  var x=totals();$('#dr-t').textContent=fmt(coupon&&coupon.ok?coupon.total:x.s);}
-function send(){var ids=Object.keys(cart);if(!ids.length)return;var x=totals(),nm=$('#nm').value.trim();var lines=[t('hi'),''];ids.forEach(function(k){var c=cart[k];lines.push('• '+c.qty+' × '+c.name+' — '+fmt(c.qty*c.price));});
+function send(){var ids=Object.keys(cart);if(!ids.length)return;if(window.VB_KIT_SEND&&window.VB_KIT_SEND())return;var x=totals(),nm=$('#nm').value.trim();var lines=[t('hi'),''];ids.forEach(function(k){var c=cart[k];lines.push('• '+c.qty+' × '+c.name+' — '+fmt(c.qty*c.price));});
  lines.push('',t('subtotal')+': '+fmt(x.s));if(coupon&&coupon.ok)lines.push(t('coupon')+' '+coupon.code+': '+(L==='en'?coupon.descEn:coupon.desc)+' → '+fmt(coupon.total));if(nm)lines.push('',t('nm')+' '+nm+'.');
  try{if(API&&API.orderRequest)API.orderRequest({items:ids.map(function(k){return{id:k,qty:cart[k].qty};}),total:coupon&&coupon.ok?coupon.total:x.s,coupon:coupon&&coupon.ok?coupon.code:''});}catch(e){}
  window.open(waUrl(lines.join('\n')),'_blank','noopener');}
@@ -232,7 +255,41 @@ function site(){var nm=clean(SITE.title&&SITE.title!=='RAVE DIGITAL'?SITE.title:
  $('#q').placeholder=t('ph');$('#nm').placeholder=t('ph2');document.documentElement.lang=L;
  document.querySelectorAll('.lang button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-l')===L);});
  window.RAVE_LANG=function(){return L;};}
-function all(){load();site();render();bar();}
+
+/* --- reserva de canchas online (horarios libres, sin datos de otros clientes) --- */
+var cnD='',cnS='',cnSel=null;
+var CNT={es:{b:'Reservas online · las 24 horas',h:'Reservá tu cancha',p:'Elegí el día, la cancha y el horario. Te confirmamos por WhatsApp.',go:'Reservar cancha',today:'Hoy',tom:'Mañana',all:'Todas',none:'No quedan horarios libres este día. Probá otro día.',busy:'Ocupado',nm:'Tu nombre',wa:'Tu WhatsApp',send:'Pedir el turno por WhatsApp',roof:'techada',light:'con luz',min:'min',dep:'Para reservar se pide una seña del',bad:'Completá tu nombre y tu WhatsApp.',ok:'¡Listo! Te enviamos al WhatsApp del club para confirmar. Si no se abrió, ',okl:'tocá acá',msg:'Hola, quiero reservar'},
+ en:{b:'Online booking · 24/7',h:'Book a court',p:'Pick the day, court and time. We confirm on WhatsApp.',go:'Book a court',today:'Today',tom:'Tomorrow',all:'All',none:'No free slots this day. Try another day.',busy:'Taken',nm:'Your name',wa:'Your WhatsApp',send:'Request on WhatsApp',roof:'indoor',light:'lights',min:'min',dep:'A deposit is required:',bad:'Fill in your name and WhatsApp.',ok:'Done! We opened the club WhatsApp to confirm. If it did not open, ',okl:'tap here',msg:'Hi, I would like to book'}};
+function ct(k){return CNT[L][k];}
+var WD={es:['dom','lun','mar','mié','jue','vie','sáb'],en:['Sun','Mon','Tue','Wed','Thu','Fri','Sat']};
+function dlab(d,i){if(i===0)return ct('today');if(i===1)return ct('tom');var x=new Date(d+'T12:00:00');return WD[L][x.getDay()]+' '+d.slice(8)+'/'+d.slice(5,7);}
+function renderCn(){var C=SITE.canchas,sec=$('#canchas');$('#go-cn').hidden=!C;if(!C||!C.courts||!C.courts.length){sec.hidden=true;return;}sec.hidden=false;
+ $('#cn-b').textContent=ct('b');$('#cn-h').textContent=ct('h');$('#cn-p').textContent=ct('p');$('#go-cn').textContent=ct('go');$('#cn-nl').textContent=ct('nm');$('#cn-wl').textContent=ct('wa');$('#cn-send').textContent=ct('send');
+ if(C.days.indexOf(cnD)<0)cnD=C.days[0];
+ $('#cn-days').innerHTML=C.days.map(function(d,i){return '<button type="button" class="cn-pill" data-cnd="'+d+'" aria-pressed="'+(d===cnD)+'">'+esc(dlab(d,i))+'</button>';}).join('');
+ var sps=[];C.courts.forEach(function(c){if(sps.indexOf(c.sport)<0)sps.push(c.sport);});if(sps.indexOf(cnS)<0)cnS='';
+ $('#cn-sp').hidden=sps.length<2;$('#cn-sp').innerHTML=sps.length<2?'':['' ].concat(sps).map(function(s){return '<button type="button" class="cn-pill" data-cns="'+esc(s)+'" aria-pressed="'+(s===cnS)+'">'+esc(s||ct('all'))+'</button>';}).join('');
+ $('#cn-grid').innerHTML=C.courts.filter(function(c){return !cnS||c.sport===cnS;}).map(function(c){var L2=(C.slots[c.id]||{})[cnD]||[];var free=L2.filter(function(x){return x[2];}).length;
+  var meta=[c.sport,c.surf,c.roof?ct('roof'):'',c.light?ct('light'):'',c.dur+' '+ct('min'),clean(c.info)].filter(Boolean).join(' · ');
+  return '<article class="cn-c"><h3>'+esc(c.name)+'</h3><div class="cn-m">'+esc(meta)+'</div>'+(free?'<div class="cn-sls">'+L2.map(function(x){var sel=cnSel&&cnSel.court===c.id&&cnSel.date===cnD&&cnSel.time===x[0];return '<button type="button" class="cn-sl" data-cnc="'+esc(c.id)+'" data-cnh="'+esc(x[0])+'" data-cnp="'+x[1]+'" aria-pressed="'+!!sel+'"'+(x[2]?'':' disabled')+' aria-label="'+esc(c.name+' '+x[0]+(x[2]?' '+fmt(x[1]):' '+ct('busy')))+'"><b>'+esc(x[0])+'</b><span>'+(x[2]?fmt(x[1]):ct('busy'))+'</span></button>';}).join('')+'</div>':'<p class="cn-none">'+ct('none')+'</p>')+'</article>';}).join('');
+ paintCnForm();}
+function cnCourt(id){return (SITE.canchas&&SITE.canchas.courts||[]).find(function(c){return c.id===id;});}
+function cnLine(){var c=cnCourt(cnSel.court);var i=SITE.canchas.days.indexOf(cnSel.date);return (c?c.name+' ('+c.sport+')':'')+' · '+dlab(cnSel.date,i)+(i>1?'':' '+cnSel.date.slice(8)+'/'+cnSel.date.slice(5,7))+' · '+cnSel.time+' h · '+fmt(cnSel.price);}
+function paintCnForm(){var f=$('#cn-form');if(!cnSel||cnSel.date!==cnD){f.hidden=true;return;}f.hidden=false;var c=cnCourt(cnSel.court);
+ $('#cn-sum').innerHTML='<em>'+esc(cnLine())+'</em>'+(c&&c.dep?'<div class="cn-m" style="margin:4px 0 0">'+esc(ct('dep'))+' '+c.dep+' % ('+fmt(cnSel.price*c.dep/100)+')</div>':'');}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-cnd],[data-cns],[data-cnc],#go-cn');if(!b)return;
+ if(b.id==='go-cn'){$('#canchas').scrollIntoView({behavior:'smooth'});return;}
+ if(b.hasAttribute('data-cnd')){cnD=b.getAttribute('data-cnd');renderCn();return;}
+ if(b.hasAttribute('data-cns')){cnS=b.getAttribute('data-cns');renderCn();return;}
+ if(b.hasAttribute('data-cnc')&&!b.disabled){cnSel={court:b.getAttribute('data-cnc'),date:cnD,time:b.getAttribute('data-cnh'),price:+b.getAttribute('data-cnp')};$('#cn-msg').textContent='';$('#cn-done').textContent='';renderCn();setTimeout(function(){$('#cn-n').focus({preventScroll:true});$('#cn-form').scrollIntoView({behavior:'smooth',block:'nearest'});},30);}});
+$('#cn-form').addEventListener('submit',function(e){e.preventDefault();var m=$('#cn-msg');if(!cnSel)return;var nm=$('#cn-n').value.trim(),w=$('#cn-w').value.replace(/\D/g,'');
+ if(nm.length<2||w.length<8){m.className='msg bad';m.textContent=ct('bad');return;}
+ var r=null;try{if(API&&API.courtReq)r=API.courtReq({court:cnSel.court,date:cnSel.date,time:cnSel.time,name:nm,tel:w});}catch(x){}
+ if(r&&r.ok===false&&r.msg){m.className='msg bad';m.textContent=r.msg;load();cnSel=null;renderCn();return;}
+ var u=waUrl(ct('msg')+' '+cnLine()+'. '+(L==='en'?'My name is ':'Mi nombre es ')+nm+(L==='en'?', WhatsApp ':', mi WhatsApp ')+w+'.');
+ try{window.open(u,'_blank','noopener');}catch(x){}
+ m.textContent='';$('#cn-done').innerHTML=esc(ct('ok'))+'<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(ct('okl'))+'</a>.';cnSel=null;load();renderCn();});
+function all(){load();site();render();bar();renderCn();}
 document.addEventListener('click',function(e){var b=e.target.closest('button,a');if(!b)return;
  if(b.matches('.lang button')){L=b.getAttribute('data-l');try{localStorage.setItem('__KEY__-lang',L);}catch(x){}all();return;}
  if(b.classList.contains('pill')){cat=b.getAttribute('data-c');render();var y=$('#planes').getBoundingClientRect().top+scrollY-68;if(scrollY>y)scrollTo({top:y,behavior:'smooth'});return;}
@@ -252,8 +309,11 @@ $('#club-f').addEventListener('submit',function(e){e.preventDefault();var m=$('#
 var lastTap=0,openP=function(e){if(e)e.preventDefault();try{API.openPanel();}catch(x){}};
 ['#logo','#bn'].forEach(function(sel){var el=$(sel);el.addEventListener('dblclick',openP);el.addEventListener('touchend',function(e){var n=Date.now();if(n-lastTap<350){lastTap=0;openP(e);}else lastTap=n;});});
 $('.brand').style.userSelect='none';
+window.VB_KIT_WA=WA();window.VB_KIT={mount:$('#vbk-mount'),items:function(){return Object.keys(cart).map(function(k){return {id:k,qty:cart[k].qty,price:cart[k].price};});},total:function(){return totals().s;},clear:function(){cart={};render();bar();},close:function(){drawer(false);},lift:function(){return $('#bar').classList.contains('on')?$('#bar'):null;}};
 window.RAVE_PUB_REFRESH=function(){var keep=cart;all();cart=keep;bar();};
 all();
+try{if(window.parent&&window.parent.location.hash==='#canchas'&&SITE.canchas)setTimeout(function(){$('#canchas').scrollIntoView();},150);}catch(e){}
 })();
 </script>
+<script>/*VBKIT*/</script>
 </body></html>

@@ -8,7 +8,7 @@ function pubCatalog(){const secs=menuSecs(false).map(r=>({cat:r.id,nom:r.mNom||r
  const productos=S.products.filter(p=>p.menu&&p.active&&!p.archived&&ids.has(prodMenuSec(p))).map(p=>({id:p.id,cat:prodMenuSec(p),grupo:p.grupo||'',nom:p.name,sub:p.sub||'',precio:p.price/100,img:prodImg(p),destacado:!!p.featured,desc:p.desc||'',unidad:p.unit!=='u'?p.unit:'',agotado:stockOf(p)<=0,_o:p.mOrd!==undefined?p.mOrd:100000+S.products.indexOf(p)})).sort((a,b)=>a._o-b._o).map(x=>{delete x._o;return x;});
  return{secciones:secs,productos};}
 function pubSite(){const c=mCfg();
- return{restr:restrOn(),title:c.title||'RAVE DIGITAL',sub:c.sub,pitch:c.pitch,promo:c.promo,address:S.tenant.address,mapQuery:c.mapQuery,mapUrl:c.mapUrl,reviewUrl:c.reviewUrl,wifi:c.wifi,social:(c.social||[]).filter(x=>x.on!==false&&x.url&&safeUrl(x.url)).map(x=>({k:x.k,label:x.label,handle:x.handle,url:x.url})),icons:Object.assign({},EXTRA_ICONS,SOCIAL_ICONS),footer:c.footer,wa:S.tenant.wa,alcFrom:c.alcFrom,alcTo:c.alcTo,hideTeamBtn:!!c.hideTeamBtn,clubOn:c.clubOn!==false,club:{goal:+S.loyalty.goal||10,reward:String(S.loyalty.reward||'').slice(0,100)},ship:(typeof shipPublic==='function'?shipPublic(c):null),chat:(typeof crmPublic==='function'?crmPublic():null),rep:(typeof repPublic==='function'?repPublic():null),app:(typeof clubAppPublic==='function'?clubAppPublic():null),canales:(typeof canalesPublic==='function'?canalesPublic():[])};}
+ return{restr:restrOn(),title:c.title||'RAVE DIGITAL',sub:c.sub,pitch:c.pitch,promo:c.promo,address:S.tenant.address,mapQuery:c.mapQuery,mapUrl:c.mapUrl,reviewUrl:c.reviewUrl,wifi:c.wifi,social:(c.social||[]).filter(x=>x.on!==false&&x.url&&safeUrl(x.url)).map(x=>({k:x.k,label:x.label,handle:x.handle,url:x.url})),icons:Object.assign({},EXTRA_ICONS,SOCIAL_ICONS),footer:c.footer,wa:S.tenant.wa,alcFrom:c.alcFrom,alcTo:c.alcTo,hideTeamBtn:!!c.hideTeamBtn,clubOn:c.clubOn!==false,club:{goal:+S.loyalty.goal||10,reward:String(S.loyalty.reward||'').slice(0,100)},ship:(typeof shipPublic==='function'?shipPublic(c):null),chat:(typeof crmPublic==='function'?crmPublic():null),rep:(typeof repPublic==='function'?repPublic():null),app:(typeof clubAppPublic==='function'?clubAppPublic():null),canales:(typeof canalesPublic==='function'?canalesPublic():[]),canchas:(typeof canchasPublic==='function'?canchasPublic():null)};}
 const LOCAL_API={
  site:pubSite,catalog:pubCatalog,clubJoin:f=>clubJoin(f),
  card:id=>pubCard(id),cardPortable:id=>pubCardPortable(id),
@@ -16,6 +16,7 @@ const LOCAL_API={
  coupons:id=>pubCoupons(id),couponInfo:(c,t)=>pubCouponInfo(c,t),plans:()=>pubPlans(),
  orderRequest:o=>{S.orderReqs.push({id:uid(),ts:now(),total:Math.round((+o.total||0)*100),n:(o.items||[]).length,coupon:String(o.coupon||'').slice(0,24)});if(S.orderReqs.length>300)S.orderReqs.shift();emit('order.request',{n:(o.items||[]).length});save();},
  repOrder:p=>repLocalOrder(p),track:r=>repLocalTrack(r),
+ courtReq:o=>typeof canchasReq==='function'?canchasReq(o):{ok:false},
  legal:()=>legalPublic(),logArrep:()=>{S.arrep.push({id:uid(),ts:now(),status:'abierto por WhatsApp'});audit('ARREPENTIMIENTO','solicitud iniciada desde el menú público');save();},
  openPanel:()=>{location.hash='#acceso';}};
 window.RAVE_API=cloudApiWrap(LOCAL_API);if(typeof crmPubApi==='function')Object.assign(window.RAVE_API,crmPubApi());

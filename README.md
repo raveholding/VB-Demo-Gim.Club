@@ -23,6 +23,11 @@ Demo de **Sistema Vincular Business** para gimnasios: el sistema completo de rav
 - La app del socio muestra los datos del último enlace enviado; sin servidor no se sincroniza sola.
 - WhatsApp es asistido: cada mensaje lo envía una persona.
 
+## Canchas y tienda online (2026-11-17)
+
+- **Canchas y turnos:** grilla por cancha con duración y precio de horario pico, reservas online 24/7 desde la web (`/#canchas`), turnos fijos, bloqueos, video del partido, reportes y QR/banner para imprimir.
+- **Tienda online completa en la web**, como la de Almacén RAVE: envío a domicilio con seguimiento y código de entrega, «Mi cuenta» (mis pedidos, contacto, instalar la app) y chat «Escribinos».
+
 ## Código
 
 **V29.1 (2026-11-13):** base Sistema VB V26.71 completa (centro de canales con un clic en Atención al cliente, cobros digitales compactos), panel de negocio ordenado en el celular, cabecera no fija en móvil, app instalable con la marca propia y sin módulos de reparto.

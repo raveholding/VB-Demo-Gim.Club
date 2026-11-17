@@ -212,6 +212,8 @@ P.removeItem=function(k){ri.call(this,k);if(this===window.localStorage&&rd(k)!==
           BODYBG='radial-gradient(620px 480px at 10% 0%,rgba(61,224,197,.16),transparent 70%),radial-gradient(620px 520px at 95% 30%,rgba(255,106,169,.12),transparent 70%),#060b21' if nc else '#0a0a0a',
           FONTS='<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family='+('Fraunces:wght@600;700;800&family=Jost:wght@400;500;600' if nc else 'Poppins:wght@400;500;600;700;800')+'&display=swap">')
         for a,b in V.items(): doc=doc.replace('__'+a+'__',b)
+        kit=os.path.join(os.path.dirname(os.path.abspath(__file__)),'capa-gimnasio','vb-kit.js')
+        if os.path.exists(kit): doc=doc.replace('/*VBKIT*/',open(kit).read()) # V29.6 · kit de tienda: chat, envío con seguimiento y «Mi cuenta»
         h=h[:k]+json.dumps(doc).replace('</','<\\/')+h[e:]
     if nc:
         h=h.replace("'<span class=\"demo-b\">DEMO DE EVALUACIÓN</span>'","''")
