@@ -531,7 +531,7 @@ if(isGymBuild()){
 
 /* ---------- datos de ejemplo ---------- */
 function gymBase(d){const NC=isNC();const NM=NC?'Movimiento Inteligente':'Mi Gimnasio';
- d.tenant=Object.assign({},d.tenant,NC?{name:NM,legal:'Nahuel Cornu',slogan:'Entrenamiento personalizado · Nahuel Cornu',address:'Salta, Argentina',wa:'',caja:1}:{name:NM,legal:NM+' (demo de ejemplo)',slogan:'Gimnasio y centro de fitness · demo',address:'Salta, Argentina',wa:'',caja:1});
+ d.tenant=Object.assign({},d.tenant,NC?{name:NM,legal:'Nahuel Cornu',slogan:'Entrenamiento personalizado · Nahuel Cornu',address:'Salta, Argentina',wa:'',caja:1}:{name:NM,legal:NM,slogan:'Gimnasio y centro de fitness · demo',address:'Av. Belgrano 1450, Salta (ejemplo)',phone:'(0387) 400-1450',cuit:'27-31245678-3',iva:'Responsable Monotributo (ejemplo)',wa:'',caja:1});
  d.menu=Object.assign({},d.menu,{title:NM.toUpperCase(),sub:NC?{es:'Entrenamiento personalizado · Nahuel Cornu',en:'Personal training · Nahuel Cornu'}:{es:'Gimnasio y centro de fitness · demo',en:'Gym and fitness center · demo'},
   pitch:NC?{es:'Entrenamiento personalizado de **1, 2 o 3 sesiones por semana**, presencial o con **programación virtual**. Elegí tu plan y escribime por WhatsApp para coordinar tu evaluación inicial.',en:'Personal training **1, 2 or 3 sessions a week**, in person or with **online programming**. Pick your plan and message me on WhatsApp to book your first assessment.'}
    :{es:'Elegí tu **membresía**, sumá suplementos o bebidas y **mandá tu consulta por WhatsApp**: te respondemos y coordinamos tu primera visita.',en:'Pick your **membership**, add supplements or drinks and **send your request via WhatsApp**: we reply and book your first visit.'},

@@ -26,6 +26,10 @@ if PROFILE=='nc': pub=os.environ.get('PUBLIC_URL','https://raveholding.github.io
 build={'ver':datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d %H:%M')+' UTC','variant':V,'db':'rave-almacenrave-v1' if V=='cliente' else {'kini':'rave-kini-demo-v2','solo':'rave-solo-demo-v1','v3':'rave-v3-demo-v2','gym':'rave-gym-demo-v1','nc':'rave-nc-mi-v1'}.get(PROFILE,'rave-cliente-v3'),'publicUrl':pub}
 if PROFILE: build['profile']=PROFILE
 cfg='<script>window.RAVE_BUILD=%s;window.RAVE_CLOUD=%s;</script>\n'%(json.dumps(build),json.dumps({'url':url,'key':key,'slug':slug}))
+# V27.6 aislar: cada demo usa sus propios nombres de datos, canales y caché del celular
+if V=='demo': cfg=cfg.replace('</script>',"(function(){/* V27.6 · Cada demo guarda lo suyo: todas comparten raveholding.github.io y sin esto se mezclan datos entre demos (y con un sistema real abierto en el mismo navegador). */var B=window.RAVE_BUILD;if(!B||B.variant!=='demo'||window.__vbNS)return;var ns=window.__vbNS=B.db+'|';try{var S=Storage.prototype,g=S.getItem,s=S.setItem,r=S.removeItem,P=function(st,x){x=String(x);return st===window.localStorage&&x.indexOf(ns)!==0?ns+x:x};S.getItem=function(x){return g.call(this,P(this,x))};S.setItem=function(x,v){return s.call(this,P(this,x),v)};S.removeItem=function(x){return r.call(this,P(this,x))};}catch(e){}try{var I=window.indexedDB,o=I.open.bind(I),d=I.deleteDatabase.bind(I),N=function(n){n=String(n);return n===B.db||n.indexOf(ns)===0?n:ns+n};I.open=function(n,v){return v===undefined?o(N(n)):o(N(n),v)};I.deleteDatabase=function(n){return d(N(n))};}catch(e){}try{var BC=window.BroadcastChannel;if(BC){var W=function(n){return new BC(ns+n)};W.prototype=BC.prototype;window.BroadcastChannel=W;}}catch(e){}})();"+'</script>',1)
+# V27.6 reiniciar: botón «Reiniciar demo» en el ingreso y al pie del menú
+if V=='demo': cfg=cfg.replace('</script>','(function(){/* V27.6 · Reiniciar demo: borra SÓLO lo de esta demo (sus datos del navegador, su base y la de tarjetas) y recarga con los ejemplos frescos, fechados hoy. */\nvar B=window.RAVE_BUILD;if(!B||B.variant!==\'demo\'||window.vbDemoReset)return;var ns=B.db+\'|\';\nwindow.vbDemoReset=function(sinPreguntar){\n var go=function(){try{var ks=[];for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf(ns)===0)ks.push(k);}ks.forEach(function(k){localStorage.removeItem(k);});}catch(e){}\n  try{sessionStorage.clear();}catch(e){}\n  var n=0,fin=function(){if(++n<2)return;location.replace(location.pathname+\'#acceso\');setTimeout(function(){location.reload();},50);};\n  [B.db,\'rave-card\'].forEach(function(db){try{var r=indexedDB.deleteDatabase(db);r.onsuccess=r.onerror=r.onblocked=fin;}catch(e){fin();}});setTimeout(function(){n=1;fin();},1500);};\n if(sinPreguntar)return go();\n var msg=\'Se borra todo lo que se cargó en esta demo en este navegador (ventas, clientes, cambios y configuración) y vuelven los datos de ejemplo, fechados hoy. Las otras demos no se tocan.\';\n if(typeof confirmBox===\'function\')confirmBox(\'Reiniciar la demo\',msg,go,\'Reiniciar\');else if(window.confirm(\'Reiniciar la demo\\n\\n\'+msg))go();};\nvar css=\'.vb-rst{display:inline-flex;align-items:center;gap:.4rem;font:inherit;font-size:.85rem;padding:.55rem .9rem;border-radius:10px;border:1px dashed currentColor;background:transparent;color:inherit;opacity:.85;cursor:pointer}.vb-rst:hover{opacity:1}#side .vb-rst{margin:1rem .8rem 1.4rem;width:calc(100% - 1.6rem);justify-content:center}.vb-rst-login{display:flex;justify-content:center;margin:1.2rem 0 .4rem}\';\nvar poner=function(){if(!document.getElementById(\'vb-rst-css\')){var st=document.createElement(\'style\');st.id=\'vb-rst-css\';st.textContent=css;(document.head||document.documentElement).appendChild(st);}\n var side=document.getElementById(\'side\');if(side&&!side.querySelector(\'.vb-rst\')){var b=document.createElement(\'button\');b.type=\'button\';b.className=\'vb-rst\';b.textContent=\'↺ Reiniciar demo\';b.onclick=function(){window.vbDemoReset();};side.appendChild(b);}\n var box=document.querySelector(\'#login .lbox\')||((document.getElementById(\'lp\')||document.getElementById(\'pin\')||{}).parentElement);if(box&&box.nodeType===1&&!box.querySelector(\'.vb-rst-login\')){var w=document.createElement(\'div\');w.className=\'vb-rst-login\';w.innerHTML=\'<button type="button" class="vb-rst">↺ Reiniciar demo (dejarla como nueva)</button>\';w.firstChild.onclick=function(){window.vbDemoReset();};var ref=[].slice.call(box.querySelectorAll(\'p\')).find(function(p){return /Olvidaste/.test(p.textContent);});if(ref)ref.parentElement.insertBefore(w,ref.nextSibling);else box.appendChild(w);}};\nvar mo=new MutationObserver(function(){poner();});var arr=function(){poner();mo.observe(document.body,{childList:true,subtree:true});};\nif(document.body)arr();else document.addEventListener(\'DOMContentLoaded\',arr);})();'+'</script>',1)
 head=B('p1-head.html')
 head=head.replace("connect-src 'none'","connect-src "+((url+' ') if url else '')+"https://ntfy.sh https://nominatim.openstreetmap.org").replace("img-src data: blob:","img-src 'self' data: blob: https://ntfy.sh")  # V26.68: portero SeguridadRave (avisos por ntfy y foto del timbre)
 if V=='cliente':
@@ -55,6 +59,13 @@ if ('p10-centro.js' in parts and (PROFILE=='v3' or V=='cliente') and os.environ.
 # V26.52 · R2AVE en Telegram (p10d-telegram.js, prompt 4.35): Almacén RAVE (real, con la nube) y raveV3 (demo simulada). Kini y raveV2 no.
 if os.path.exists('p10d-telegram.js') and ((V=='cliente' or PROFILE=='v3') and os.environ.get('TG','1')!='0' or os.environ.get('TG')=='1'): parts.append('p10d-telegram.js')
 import base64
+
+def tk_uri(svg):
+    # V27.6 · logo del ticket en negro sobre blanco: en la impresora térmica un fondo oscuro sale como un bloque negro
+    t=re.sub(r'<rect width="320" height="180" rx="22" fill="#[0-9a-fA-F]{3,6}"/>','@@FONDO@@',svg,count=1)
+    t=re.sub(r'(stroke|fill)="#[0-9a-fA-F]{3,6}"',lambda m:m.group(1)+'="#000000"',t)
+    t=t.replace('@@FONDO@@','<rect width="320" height="180" fill="#ffffff"/>')
+    return 'data:image/svg+xml;base64,'+base64.b64encode(t.encode()).decode()
 def kini_brand(h):
     # Marca de la demo Kini: logo y colores (se reemplazan con los del cliente cuando lleguen); los créditos de Vincular Business no se tocan
     lg=os.environ.get('KINI_LOGO','assets/kini-logo.webp')
@@ -97,7 +108,7 @@ def solo_brand(h,v3=False):
     svg='<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180"><rect width="320" height="180" rx="22" fill="%s"/><text x="160" y="92" font-family="Arial,Helvetica,sans-serif" font-size="%s" font-weight="700" fill="#ffffff" text-anchor="middle">%s</text><text x="160" y="136" font-family="Arial,Helvetica,sans-serif" font-size="20" letter-spacing="4" fill="%s" text-anchor="middle">%s</text></svg>'%(c1,fs,NMU,lt,TAG)
     uri='data:image/svg+xml;base64,'+base64.b64encode(svg.encode()).decode()
     h=re.sub(r'const LOGO_MENU="[^"]*"','const LOGO_MENU="%s"'%uri,h,count=1)
-    h=re.sub(r'const LOGO_TICKET="[^"]*"','const LOGO_TICKET="%s"'%uri,h,count=1)
+    h=re.sub(r'const LOGO_TICKET="[^"]*"','const LOGO_TICKET="%s"'%tk_uri(svg),h,count=1)
     h=h.replace('--ink:#242220;','--ink:%s;'%c1,1).replace('--gold:#c9963e;','--gold:%s;'%c2,1).replace('--gold2:#a87a28;','--gold2:%s;'%c3,1)
     h=h.replace('style="width:48px;height:27px;object-fit:cover;border-radius:6px"','style="width:48px;height:27px;object-fit:contain;border-radius:6px"')
     h=h.replace('Sistema RAVE','Sistema VB').replace('alt="RAVE"','alt="%s"'%NM)
@@ -137,7 +148,7 @@ def gym_brand(h,nc=False):
         fonts='<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap">'
         theme=GYM_THEME; tkey='rave.theme.gym'
     h=re.sub(r'const LOGO_MENU="[^"]*"','const LOGO_MENU="%s"'%uri,h,count=1)
-    h=re.sub(r'const LOGO_TICKET="[^"]*"','const LOGO_TICKET="%s"'%uri,h,count=1)
+    h=re.sub(r'const LOGO_TICKET="[^"]*"','const LOGO_TICKET="%s"'%tk_uri(svg),h,count=1)
     h=h.replace('--ink:#242220;','--ink:%s;'%c1,1).replace('--gold:#c9963e;','--gold:%s;'%c2,1).replace('--gold2:#a87a28;','--gold2:%s;'%c3,1)
     h=h.replace('style="width:48px;height:27px;object-fit:cover;border-radius:6px"','style="width:40px;height:40px;object-fit:%s;border-radius:10px"'%('cover' if nc else 'contain'))
     h=h.replace('<span>Sistema RAVE</span></a>','<span>%s</span></a>'%NM,1)
@@ -325,7 +336,7 @@ def pwa_files(d):
     m2=dict(base,id='./?app=club',name=APPN[2],short_name=APPN[2][:12],description='Tu tarjeta del Club, beneficios, pedidos y contacto con el local.',start_url='./#mitarjeta',orientation='portrait',categories=['shopping','lifestyle'])
     json.dump(m1,open(os.path.join(d,'app.webmanifest'),'w',encoding='utf8'),ensure_ascii=False,indent=1)
     json.dump(m2,open(os.path.join(d,'club.webmanifest'),'w',encoding='utf8'),ensure_ascii=False,indent=1)
-    sw=open('pwa-sw.js',encoding='utf8').read().replace('__VER__',build['ver']+' '+V)
+    sw=open('pwa-sw.js',encoding='utf8').read().replace('__NS__',build['db']).replace('__VER__',build['ver']+' '+V)
     open(os.path.join(d,'sw.js'),'w',encoding='utf8').write(sw)
 open(out,'w',encoding='utf8').write(html)
 _gd=os.path.dirname(os.path.abspath(out))
