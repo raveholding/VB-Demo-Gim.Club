@@ -20,7 +20,7 @@ def gym_brand(h,nc=False):
     h=re.sub(r'const LOGO_TICKET="[^"]*"','const LOGO_TICKET="%s"'%uri,h,count=1)
     h=h.replace('--ink:#242220;','--ink:%s;'%c1,1).replace('--gold:#c9963e;','--gold:%s;'%c2,1).replace('--gold2:#a87a28;','--gold2:%s;'%c3,1)
     h=h.replace('style="width:48px;height:27px;object-fit:cover;border-radius:6px"','style="width:40px;height:40px;object-fit:%s;border-radius:10px"'%('cover' if nc else 'contain'))
-    h=h.replace('<span>Sistema RAVE</span></a>','<span>%s</span></a>'%NM,1)
+    h=h.replace('<span>Sistema RAVE</span></a>',('<span>%s</span></a>'%NM) if nc else '<span>${esc((S.tenant&&S.tenant.name)||"%s")}</span></a>'%NM,1)
     h=h.replace('Sistema RAVE','Sistema VB').replace('alt="RAVE"','alt="%s"'%NM)
     h=re.sub(r'<title>[^<]*</title>','<title>%s · %s</title>'%(NM,'Entrenamiento personalizado · Nahuel Cornu' if nc else 'Sistema VB para gimnasios · demo'),h,count=1)
     h=h.replace('<title>',fonts+'\n<title>',1)

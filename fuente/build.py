@@ -55,6 +55,8 @@ if os.path.exists('p27-prv-pro.js') and 'p4d-compras-ui.js' in parts: parts.inse
 # V27.25 · Atención al cliente: Hoy, Agenda y Pipeline (puerto desde AlmacenRAVE)
 if os.path.exists('p26-crm-pro.js') and 'p6j-crm.js' in parts and 'p5c-menusec.js' in parts: parts.insert(parts.index('p5c-menusec.js'),'p26-crm-pro.js')
 if PROFILE in('gym','nc'): parts.insert(parts.index('p5c-menusec.js'),'p11-gym.js')
+# V27.30 · rubros del gimnasio (palabras, menú, clases y app por rubro) y módulo Academias
+if PROFILE=='gym' and os.path.exists('p11e-rubros.js'): parts.insert(parts.index('p11-gym.js')+1,'p11e-rubros.js')
 # V26.37 · Centro Inteligente (p10-centro.js): módulo aislado.
 # V26.40: aprobado por el dueño para Almacén RAVE (apagado por defecto; lo activa el administrador). Kini no lo lleva salvo CI=1.
 # raveV2 (solo) y Kini no llevan el Centro Inteligente: es de raveV3 y de Almacén RAVE (apagado)
@@ -159,7 +161,7 @@ def gym_brand(h,nc=False):
     h=re.sub(r'const LOGO_TICKET="[^"]*"','const LOGO_TICKET="%s"'%tk_uri(svg),h,count=1)
     h=h.replace('--ink:#242220;','--ink:%s;'%c1,1).replace('--gold:#c9963e;','--gold:%s;'%c2,1).replace('--gold2:#a87a28;','--gold2:%s;'%c3,1)
     h=h.replace('style="width:48px;height:27px;object-fit:cover;border-radius:6px"','style="width:40px;height:40px;object-fit:%s;border-radius:10px"'%('cover' if nc else 'contain'))
-    h=h.replace('<span>Sistema RAVE</span></a>','<span>%s</span></a>'%NM,1)
+    h=h.replace('<span>Sistema RAVE</span></a>',('<span>%s</span></a>'%NM) if nc else '<span>${esc((S.tenant&&S.tenant.name)||"%s")}</span></a>'%NM,1)
     h=h.replace('Sistema RAVE','Sistema VB').replace('alt="RAVE"','alt="%s"'%NM)
     h=re.sub(r'<title>[^<]*</title>','<title>%s · %s</title>'%(NM,'Entrenamiento personalizado · Nahuel Cornu' if nc else 'Sistema VB para gimnasios · demo'),h,count=1)
     h=h.replace('<title>',fonts+'\n<title>',1)

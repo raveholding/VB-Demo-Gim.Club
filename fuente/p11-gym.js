@@ -7,7 +7,7 @@
 function GYM_PROF(){return (typeof window!=='undefined'&&window.RAVE_BUILD&&window.RAVE_BUILD.profile)||'';}
 function isGymBuild(){const p=GYM_PROF();return p==='gym'||p==='nc';}
 const isNC=()=>GYM_PROF()==='nc';
-const GW=()=>isNC()?{s:'alumno',ss:'alumnos',S:'Alumno',SS:'Alumnos',g:'Entrenamiento',m:'plan',M:'Plan',MM:'Planes'}:{s:'socio',ss:'socios',S:'Socio',SS:'Socios',g:'Gimnasio',m:'membresía',M:'Membresía',MM:'Membresías'};
+const GW=()=>(!isNC()&&window.gwVert)?window.gwVert():isNC()?{s:'alumno',ss:'alumnos',S:'Alumno',SS:'Alumnos',g:'Entrenamiento',m:'plan',M:'Plan',MM:'Planes'}:{s:'socio',ss:'socios',S:'Socio',SS:'Socios',g:'Gimnasio',m:'membresía',M:'Membresía',MM:'Membresías'};
 const gT=()=>dkey(now());
 const gDiff=(a,b)=>Math.round((new Date(b+'T12:00:00Z')-new Date(a+'T12:00:00Z'))/864e5);
 function gAddM(k,n){const [y,m,d]=k.split('-').map(Number);const t=new Date(Date.UTC(y,m-1+n,1,12));const last=new Date(Date.UTC(t.getUTCFullYear(),t.getUTCMonth()+1,0,12)).getUTCDate();t.setUTCDate(Math.min(d,last));return t.toISOString().slice(0,10);}
@@ -618,18 +618,19 @@ const money0=c=>typeof money==='function'?money(Math.round((+c||0)/100)*100):'$ 
 const pct=x=>Math.round(x*100)+' %';
 
 /* ---------- rubros y módulos activos (feature flags) ---------- */
-const MODS={gdash:'Panel de negocio',greservas:'Reservas con lista de espera',glockers:'Lockers y casilleros',gcred:'Packs y créditos de clases',gcanchas:'Canchas y turnos',gtorneos:'Torneos y posiciones',gcontacto:'Categorías y sparring',gwod:'WOD del día',qrdin:'QR dinámico en la app'};
+const MODS={gacad:'Academia: legajos, grupos, cuentas y eventos',gdash:'Panel de negocio',greservas:'Reservas con lista de espera',glockers:'Lockers y casilleros',gcred:'Packs y créditos de clases',gcanchas:'Canchas y turnos',gtorneos:'Torneos y posiciones',gcontacto:'Categorías y sparring',gwod:'WOD del día',qrdin:'QR dinámico en la app'};
 const VERTS={todo:{t:'Todos los módulos (demostración)',m:Object.keys(MODS)},
  gym:{t:'Gimnasio',m:['gdash','greservas','glockers','gcred','qrdin']},
  pt:{t:'Personal trainer',m:['gdash','qrdin']},
  box:{t:'Box / CrossFit / funcional',m:['gdash','greservas','gcred','gwod','qrdin']},
  club:{t:'Club o centro deportivo',m:['gdash','greservas','glockers','gcanchas','gtorneos','qrdin']},
- danza:{t:'Danza, bienestar (pilates, yoga) y academias',m:['gdash','greservas','gcred','qrdin']},
+ danza:{t:'Bienestar: pilates, yoga y estudios',m:['gdash','greservas','gcred','qrdin']},
+ academia:{t:'Academias: danza, teatro y modelaje',m:['gdash','gacad']},
  contacto:{t:'Deportes de contacto y artes marciales',m:['gdash','greservas','gcred','gcontacto','qrdin']}};
 const on=k=>{const p=P();const L=p.mods||VERTS[p.vert].m;return L.includes(k);};
 window.gProOn=on;
-const NAVX=[['gdash','Panel de negocio'],['glockers','Lockers'],['gcred','Packs y créditos'],['gcanchas','Canchas'],['gtorneos','Torneos'],['gcontacto','Categorías'],['gwod','WOD']];
-function applyNav(){try{NAVX.forEach(([k])=>{const sc=SCREENS[k];if(!sc)return;if(!('_show0' in sc))sc._show0=sc.show||null;const o=sc._show0;sc.show=()=>on(k)&&(!o||o());});}catch(e){}try{const it=UX_GROUPS.gym.items,sec=GW().g;for(let i=it.length-1;i>=0;i--)if(NAVX.some(x=>x[0]===it[i][0]))it.splice(i,1);
+const NAVX=[['gacad','Academia'],['gdash','Panel de negocio'],['glockers','Lockers'],['gcred','Packs y créditos'],['gcanchas','Canchas'],['gtorneos','Torneos'],['gcontacto','Categorías'],['gwod','WOD']];
+function applyNav(){try{NAVX.forEach(([k])=>{const sc=SCREENS[k];if(!sc)return;if(!('_show0' in sc))sc._show0=sc.show||null;const o=sc._show0;sc.show=()=>on(k)&&(!o||o());});}catch(e){}try{const it=UX_GROUPS.gym.items,sec=UX_SEC_OF.ginicio||GW().g;for(let i=it.length-1;i>=0;i--)if(NAVX.some(x=>x[0]===it[i][0]))it.splice(i,1);
   const add=NAVX.filter(x=>on(x[0]));it.splice(1,0,...add);add.forEach(([k])=>{UX_SEC_OF[k]=sec;if(!UX_COMPACT_OK.includes(k))UX_COMPACT_OK.push(k);});
   for(let i=NAV.length-1;i>=0;i--)if(NAVX.some(x=>x[0]===NAV[i][0]))NAV.splice(i,1);const j=NAV.findIndex(x=>x[0]==='ginicio');NAV.splice(j+1,0,...add.map(([k])=>[k,sec]));}catch(e){}}
 
@@ -1034,7 +1035,7 @@ document.addEventListener('change',e=>{const x=e.target;if(!x||!x.closest||!x.cl
  if(x.id==='gp-v'){p.vert=x.value;p.mods=null;seed();}
  else if(x.classList.contains('gp-mod')){const L=new Set(p.mods||VERTS[p.vert].m);x.checked?L.add(x.dataset.k):L.delete(x.dataset.k);p.mods=[...L];seed();}
  else if(x.id==='gp-ch')p.cfg.cancelH=Math.max(0,parseInt(x.value)||0);else if(x.id==='gp-cf')p.cfg.confirmH=Math.max(0,parseInt(x.value)||0);else if(x.id==='gp-ns')p.cfg.noShowMin=Math.max(5,parseInt(x.value)||20);else if(x.id==='gp-qs')p.cfg.qrStrict=x.checked;
- audit('GYM_MODULOS',VERTS[p.vert].t+' · '+(p.mods||VERTS[p.vert].m).join(', '));save();applyNav();rerender();toast('Guardado');});
+ audit('GYM_MODULOS',VERTS[p.vert].t+' · '+(p.mods||VERTS[p.vert].m).join(', '));save();applyNav();try{window.gRubroApply&&gRubroApply(true);}catch(e){console.warn(e);}rerender();toast('Guardado');});
 
 /* ---------- datos de ejemplo de los módulos nuevos (también en datos ya guardados) ---------- */
 function seed(){const p=P(),t=gT(),A0=gActives();if(!A0.length)return;let s=7;const R=()=>{s=(s*9301+49297)%233280;return s/233280;};const pick=L=>L[Math.floor(R()*L.length)];
@@ -1121,7 +1122,7 @@ window.addEventListener('storage',e=>{if(e.key===PTK()&&portIn()&&/gacceso|gdash
 setInterval(()=>{try{if(portIn()&&/gacceso|gdash|ginicio/.test(curScreen))rerender();}catch(e){}},15000);
 const portUrl=()=>{try{return new URL('portero.html',location.href).href;}catch(e){return'portero.html';}};
 {const _ac=SCREENS.gacceso&&SCREENS.gacceso.render;if(_ac)SCREENS.gacceso.render=function(){const h=_ac.apply(this,arguments);const x=`<div class="card gp-glass" style="margin:0 0 1rem"><div class="row" style="flex-wrap:wrap;gap:.6rem"><div class="sp"><b>Portero digital para la puerta</b><div class="sm mut">Instalalo en la tablet o el celular de la entrada: valida la cuota con el QR de la app o el DNI, tiene timbre por áreas, pases de visita, PIN del equipo y emergencia. Los ingresos llegan solos acá.</div></div><button class="btn gold" data-act="gOpenUrl" data-u="${esc(portUrl())}">Abrir el portero</button></div></div>`;const i=h.indexOf('</h1>');if(i<0)return x+h;const j=h.indexOf('</div>',i);return j<0?x+h:h.slice(0,j+6)+x+h.slice(j+6);};}
-window.gProBoot=()=>{try{['reparto','copiloto'].forEach(k=>{if(SCREENS[k])SCREENS[k].show=()=>false;});P();applyNav();seed();sweep();portIn();}catch(e){}};
+window.gProBoot=()=>{try{['reparto','copiloto'].forEach(k=>{if(SCREENS[k])SCREENS[k].show=()=>false;});P();applyNav();seed();sweep();portIn();}catch(e){}try{window.gRubroApply&&gRubroApply(false);}catch(e){console.warn(e);}};
 if(typeof A.login==='function'){const _l=A.login;A.login=function(){const r=_l.apply(this,arguments);window.gProBoot();return r;};}
 {const _ir=SCREENS.ginicio.render;let booted=0;SCREENS.ginicio.render=function(){if(!booted){booted=1;window.gProBoot();}return _ir.apply(this,arguments);};}
 try{applyNav();}catch(e){}setTimeout(()=>['reparto','copiloto'].forEach(k=>{if(SCREENS[k])SCREENS[k].show=()=>false;}),0);

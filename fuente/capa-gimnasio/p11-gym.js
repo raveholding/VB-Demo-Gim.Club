@@ -7,7 +7,7 @@
 function GYM_PROF(){return (typeof window!=='undefined'&&window.RAVE_BUILD&&window.RAVE_BUILD.profile)||'';}
 function isGymBuild(){const p=GYM_PROF();return p==='gym'||p==='nc';}
 const isNC=()=>GYM_PROF()==='nc';
-const GW=()=>isNC()?{s:'alumno',ss:'alumnos',S:'Alumno',SS:'Alumnos',g:'Entrenamiento',m:'plan',M:'Plan',MM:'Planes'}:{s:'socio',ss:'socios',S:'Socio',SS:'Socios',g:'Gimnasio',m:'membresía',M:'Membresía',MM:'Membresías'};
+const GW=()=>(!isNC()&&window.gwVert)?window.gwVert():isNC()?{s:'alumno',ss:'alumnos',S:'Alumno',SS:'Alumnos',g:'Entrenamiento',m:'plan',M:'Plan',MM:'Planes'}:{s:'socio',ss:'socios',S:'Socio',SS:'Socios',g:'Gimnasio',m:'membresía',M:'Membresía',MM:'Membresías'};
 const gT=()=>dkey(now());
 const gDiff=(a,b)=>Math.round((new Date(b+'T12:00:00Z')-new Date(a+'T12:00:00Z'))/864e5);
 function gAddM(k,n){const [y,m,d]=k.split('-').map(Number);const t=new Date(Date.UTC(y,m-1+n,1,12));const last=new Date(Date.UTC(t.getUTCFullYear(),t.getUTCMonth()+1,0,12)).getUTCDate();t.setUTCDate(Math.min(d,last));return t.toISOString().slice(0,10);}
