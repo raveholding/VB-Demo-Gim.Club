@@ -90,6 +90,7 @@ if(SCREENS.ginicio){const _r=SCREENS.ginicio.render;SCREENS.ginicio.render=funct
  if(P0.serv){const a=h.indexOf('<div class="g-serv">'),b=h.indexOf('</div></div>',a);if(a>0&&b>a)h=h.slice(0,a)+'<div class="g-serv">'+P0.serv.map(([ar,l,d,go])=>`<button class="g-svc" data-act="nav" data-id="${go}">${gArt(ar)}<b>${esc(l)}</b><span>${esc(d)}</span></button>`).join('')+h.slice(b);}
  if(VG()==='academia'){h=h.replace('Programas destacados','Disciplinas').replace('data-id="gacceso">Control de acceso','data-id="gacad">Asistencia de hoy').replace(/>Modo tótem</,'>Ingreso con QR<').replace('<b>Rutinas</b>','<b>Asistencia</b>');
   h=h.replace('data-act="nav" data-id="gclases">Ver grilla','data-act="nav" data-id="gacad">Ver grupos');}
+ const alu=W8(P0.w).s;h=`<div class="card" style="display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;border:2px solid var(--gold);margin-bottom:.8rem"><div style="font-size:2rem" aria-hidden="true">📱</div><div class="sp" style="min-width:220px"><b>Incluye la app del ${esc(alu)} con asistente de rutina y de alimentación</b><div class="sm mut">Cada ${esc(alu)} tiene en su celular su QR de ingreso, su cuota, la rutina con videos y temporizador, y comidas y viandas del día según su objetivo y su entrenamiento.</div></div><a class="btn gold" href="socio.html" target="_blank" rel="noopener">Ver la app del ${esc(alu)}</a></div>`+h;
  }catch(e){}return h;};}
 
 /* =====================================================================
